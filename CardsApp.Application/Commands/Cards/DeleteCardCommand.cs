@@ -1,6 +1,5 @@
 ﻿using CardsApp.Application.Interfaces;
 using CardsApp.Domain;
-using CardsApp.Domain.Dto.Cards;
 using CardsApp.Domain.Dto.Results;
 using CardsApp.Domain.Enums;
 using MediatR;
