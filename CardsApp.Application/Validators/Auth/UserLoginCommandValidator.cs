@@ -7,6 +7,7 @@ public class UserLoginCommandValidator: AbstractValidator<UserLoginCommand>
 {
     public UserLoginCommandValidator()
     {
-        //todo complete validator
+        RuleFor(x => x.UserName).NotEmpty().EmailAddress();
+        RuleFor(x => x.Password).NotEmpty().MinimumLength(8);
     }
 }
