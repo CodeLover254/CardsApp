@@ -1,7 +1,7 @@
 ﻿using CardsApp.Application.Interfaces;
 using CardsApp.Domain;
-using CardsApp.Domain.Dto;
 using CardsApp.Domain.Dto.Cards;
+using CardsApp.Domain.Dto.Results;
 using CardsApp.Domain.Entities;
 using CardsApp.Domain.Enums;
 using CardsApp.Domain.Mappers.Cards;
