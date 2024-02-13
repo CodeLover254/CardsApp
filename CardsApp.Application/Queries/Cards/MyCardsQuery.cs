@@ -40,7 +40,7 @@ public class MyCardsQueryHandler : IRequestHandler<MyCardsQuery, ApiResult<Pagin
                 CardFilterables.Name => cardsQueryable.Where(x => x.Name == request.SearchTerm),
                 CardFilterables.Color => cardsQueryable.Where(x => x.Color == request.SearchTerm),
                 CardFilterables.Status => cardsQueryable.Where(x => x.Status == Enum.Parse<CardStatus>(request.SearchTerm!)),
-                CardFilterables.DateCreated=>cardsQueryable.Where(x=>x.CreatedAt == DateTime.Parse(request.SearchTerm!)),
+                CardFilterables.DateCreated => cardsQueryable.Where(x=>x.CreatedAt == DateTime.Parse(request.SearchTerm!)),
                 _=>cardsQueryable
             };
         }
@@ -52,7 +52,7 @@ public class MyCardsQueryHandler : IRequestHandler<MyCardsQuery, ApiResult<Pagin
                 CardFilterables.Name => cardsQueryable.OrderBy(x => x.Name),
                 CardFilterables.Color => cardsQueryable.OrderBy(x => x.Color),
                 CardFilterables.Status => cardsQueryable.OrderBy(x => x.Status),
-                CardFilterables.DateCreated=>cardsQueryable.OrderBy(x=>x.CreatedAt),
+                CardFilterables.DateCreated => cardsQueryable.OrderBy(x=>x.CreatedAt),
                 _=>cardsQueryable
             };
         }
