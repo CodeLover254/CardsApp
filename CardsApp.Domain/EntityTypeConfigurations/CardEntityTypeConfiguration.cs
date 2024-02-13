@@ -11,6 +11,6 @@ public class CardEntityTypeConfiguration: IEntityTypeConfiguration<Card>
         builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
         builder.Property(x => x.Color).HasMaxLength(8);
         builder.Property(x => x.UserId).HasMaxLength(40);
-        builder.Property(x => x.CardState).HasConversion<string>();
+        builder.Property(x => x.Status).HasConversion<string>();
     }
 }
