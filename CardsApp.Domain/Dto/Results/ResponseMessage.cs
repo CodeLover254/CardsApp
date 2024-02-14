@@ -24,7 +24,7 @@ public static class ResponseMessage<T>
             Message = message,
             Result = data,
             ResponseCode = responseCode,
-            Errors = new List<string>(errors)
+            Errors = new List<string>(errors ?? new List<string>())
         };
     }
 
