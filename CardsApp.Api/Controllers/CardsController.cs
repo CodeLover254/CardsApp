@@ -36,7 +36,7 @@ public class CardsController: BaseController
     }
 
     [HttpPost("create")]
-    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCard([FromBody] CreateCardCommand command)
     {
