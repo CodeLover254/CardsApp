@@ -1,0 +1,3 @@
+cd CardsApp.Domain
+dotnet ef --startup-project ../CardsApp.Api/ migrations add InitialMigration
+dotnet ef --startup-project ../CardsApp.Api/ database update

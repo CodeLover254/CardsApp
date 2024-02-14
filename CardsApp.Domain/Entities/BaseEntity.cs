@@ -8,6 +8,6 @@ public class BaseEntity
     [Key] 
     public string Id { get; set; } = Uuid.NewDatabaseFriendly(Database.PostgreSql).ToString();
     
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

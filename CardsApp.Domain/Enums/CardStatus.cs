@@ -1,6 +1,6 @@
 ﻿namespace CardsApp.Domain.Enums;
 
-public enum CardState
+public enum CardStatus
 {
     ToDo=1,
     InProgress=2,

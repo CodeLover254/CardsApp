@@ -8,6 +8,6 @@ public class Card: BaseEntity
     public string Name { get; set; }
     public string? Description { get; set; }
     public string? Color { get; set; }
-    public CardState CardState { get; set; }
+    public CardStatus Status { get; set; } = CardStatus.ToDo;
     public ApplicationUser User { get; set; }
 }
