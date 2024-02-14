@@ -12,7 +12,7 @@ public class AdminCardsQuery: BasePaginatedItemsQuery, IRequest<ApiResult<Pagina
 }
 
 public class AdminCardsQueryHandler : BaseCardsQueryHandler,
-    IRequestHandler<MyCardsQuery, ApiResult<PaginatedResult<CardResponse>>>
+    IRequestHandler<AdminCardsQuery, ApiResult<PaginatedResult<CardResponse>>>
 {
     private readonly CardAppDbContext _dbContext;
 
@@ -21,7 +21,7 @@ public class AdminCardsQueryHandler : BaseCardsQueryHandler,
         _dbContext = dbContext;
     }
 
-    public async Task<ApiResult<PaginatedResult<CardResponse>>> Handle(MyCardsQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PaginatedResult<CardResponse>>> Handle(AdminCardsQuery request, CancellationToken cancellationToken)
     {
         var cardsQueryable = _dbContext.Cards.Where(x=>true);
         
