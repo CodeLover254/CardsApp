@@ -31,6 +31,15 @@ public class GlobalExceptionFilter: IExceptionFilter
             apiResult.Message = "Invalid inputs.";
             context.Result = new BadRequestObjectResult(apiResult);
         }
+        else if (!context.ModelState.IsValid)
+        {
+            apiResult.Errors = context.ModelState.Values
+                .SelectMany(a => a.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList();
+            apiResult.Message = "Invalid inputs.";
+            context.Result = new BadRequestObjectResult(apiResult);
+        }
         else
         {
             _logger.LogError(context.Exception,"An exception occurred during a request with message {message}. Trace Id: {traceId}",context.Exception.Message,traceId);
