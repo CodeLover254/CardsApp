@@ -1,4 +1,5 @@
-﻿using CardsApp.Application.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CardsApp.Application.Interfaces;
 using CardsApp.Domain;
 using CardsApp.Domain.Dto.Results;
 using CardsApp.Domain.Enums;
@@ -9,6 +10,7 @@ namespace CardsApp.Application.Commands.Cards;
 
 public class DeleteCardCommand: IRequest<ApiResult<bool>>
 {
+    [JsonIgnore]
     public string Id { get; set; }
 }
 
