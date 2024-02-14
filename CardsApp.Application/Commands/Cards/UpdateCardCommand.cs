@@ -1,4 +1,5 @@
-﻿using CardsApp.Application.Interfaces;
+﻿using System.Text.Json.Serialization;
+using CardsApp.Application.Interfaces;
 using CardsApp.Domain;
 using CardsApp.Domain.Dto.Cards;
 using CardsApp.Domain.Dto.Results;
@@ -11,6 +12,7 @@ namespace CardsApp.Application.Commands.Cards;
 
 public class UpdateCardCommand: CardRequest, IRequest<ApiResult<CardResponse?>>
 {
+    [JsonIgnore]
     public string Id { get; set; }
     public CardStatus Status { get; set; }
 }
