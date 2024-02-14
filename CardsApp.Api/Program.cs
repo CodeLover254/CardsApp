@@ -10,6 +10,7 @@ using CardsApp.Domain.Mappers.Cards;
 using CardsApp.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -50,12 +51,19 @@ builder.Services.AddControllers(c => c.Filters.Add<GlobalExceptionFilter>())
     .AddJsonOptions(options => 
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));;
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContext<CardAppDbContext>(c =>
 {
     c.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
 });
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = false;
+    })
     .AddEntityFrameworkStores<CardAppDbContext>();
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -76,8 +84,14 @@ builder.Services.AddScoped<IAppSetupService, AppSetupService>();
 
 builder.Services.AddMediatRLibrary();
 
+builder.Services.AddAuthorization();
 var jwtSettings = builder.Configuration.GetSection(JwtSettings.Name).Get<JwtSettings>();
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(cfg =>
     {
         cfg.TokenValidationParameters = new TokenValidationParameters
