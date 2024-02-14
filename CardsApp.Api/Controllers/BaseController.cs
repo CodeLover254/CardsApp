@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CardsApp.Api.Controllers;
 
-[Authorize]
+[ApiController]
 public class BaseController : ControllerBase
 {
     public IActionResult CustomResponse<T>(ApiResult<T> apiResult)
