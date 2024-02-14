@@ -29,7 +29,7 @@ public class CardsController: BaseController
     
     [HttpGet("{Id}")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Card([FromRoute] MyCardQuery query)
     {
         return CustomResponse(await _mediator.Send(query));
@@ -37,7 +37,7 @@ public class CardsController: BaseController
 
     [HttpPost("create")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCard([FromBody] CreateCardCommand command)
     {
         return CustomResponse(await _mediator.Send(command));
@@ -45,8 +45,8 @@ public class CardsController: BaseController
     
     [HttpPut("update/{id}")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCard([FromBody] UpdateCardCommand command,[FromRoute] string id)
     {
         command.Id = id;
