@@ -25,7 +25,7 @@ builder.Services.AddSwaggerGen(cfg =>
     cfg.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
+        Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
@@ -84,7 +84,7 @@ builder.Services.AddScoped<IAppSetupService, AppSetupService>();
 
 builder.Services.AddMediatRLibrary();
 
-builder.Services.AddAuthorization();
+
 var jwtSettings = builder.Configuration.GetSection(JwtSettings.Name).Get<JwtSettings>();
 builder.Services.AddAuthentication(options =>
     {
@@ -105,7 +105,6 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
         };
     });
-
 
 var app = builder.Build();
 //setup middleware pipeline
