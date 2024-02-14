@@ -14,7 +14,7 @@ public class UpdateCardCommand: CardRequest, IRequest<ApiResult<CardResponse?>>
 {
     [JsonIgnore]
     public string Id { get; set; }
-    public CardStatus Status { get; set; }
+    public string Status { get; set; }
 }
 
 public class UpdateCardCommandHandler : IRequestHandler<UpdateCardCommand, ApiResult<CardResponse?>>
@@ -42,16 +42,11 @@ public class UpdateCardCommandHandler : IRequestHandler<UpdateCardCommand, ApiRe
 
         card.Color = request.Color;
         card.Description = request.Description;
-        card.Status = request.Status;
+        card.Status = Enum.Parse<CardStatus>(request.Status);
         
-        var affectedRows = await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
         
-        if (affectedRows > 0)
-        {
-            return ResponseMessage<CardResponse?>.Success(_mapper.MapToResponse(card), 
-                "Card successfully updated", ResponseCodes.Created);
-        }
-        
-        return ResponseMessage<CardResponse?>.Error(null, "Unable to update card");
+        return ResponseMessage<CardResponse?>.Success(_mapper.MapToResponse(card), 
+                "Card successfully updated");
     }
 }
