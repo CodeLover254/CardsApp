@@ -7,7 +7,6 @@ using CardsApp.Domain.Entities;
 using CardsApp.Domain.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,18 +21,12 @@ public class UserLoginCommand: IRequest<ApiResult<UserLoginResponse?>>
 public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, ApiResult<UserLoginResponse?>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly ILogger<UserLoginCommandHandler> _logger;
     private readonly JwtSettings _jwtSettings;
     private const string MessageForInvalidCredentials = "Invalid user or password";
 
-    public UserLoginCommandHandler(UserManager<ApplicationUser> userManager, 
-        SignInManager<ApplicationUser> signInManager, 
-        ILogger<UserLoginCommandHandler> logger,IOptions<JwtSettings> jwtOptions)
+    public UserLoginCommandHandler(UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtOptions)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
-        _logger = logger;
         _jwtSettings = jwtOptions.Value;
     }
 
@@ -45,8 +38,8 @@ public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, ApiResu
             return ResponseMessage<UserLoginResponse?>.Error(null, MessageForInvalidCredentials);
         }
 
-        var siginResult = await _signInManager.PasswordSignInAsync(user, request.Password,false,false);
-        if (!siginResult.Succeeded)  return ResponseMessage<UserLoginResponse?>.Error(null, MessageForInvalidCredentials);
+        var passwordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+        if (!passwordValid)  return ResponseMessage<UserLoginResponse?>.Error(null, MessageForInvalidCredentials);
 
         var claims = await PopulateUserClaims(user);
         
