@@ -5,7 +5,6 @@ using CardsApp.Application.Services;
 using CardsApp.Domain;
 using CardsApp.Domain.Mappers.Cards;
 using CardsApp.Domain.Settings;
-using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
