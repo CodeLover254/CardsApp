@@ -36,7 +36,7 @@ public class BaseCardsQueryHandler
             CardFilterables.Color => cardsQueryable.OrderBy(x => x.Color),
             CardFilterables.Status => cardsQueryable.OrderBy(x => x.Status),
             CardFilterables.DateCreated => cardsQueryable.OrderBy(x=>x.CreatedAt),
-            _=>cardsQueryable
+            _=>cardsQueryable.OrderBy(x=>x.CreatedAt)
         };
     }
 
