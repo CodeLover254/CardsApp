@@ -14,12 +14,12 @@ public class AppSetupService: IAppSetupService
     private readonly CardAppDbContext _dbContext;
     private readonly AppUserSettings _appUserSettings;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<string> _roleManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public AppSetupService(CardAppDbContext dbContext, 
         IOptions<AppUserSettings> options, 
         UserManager<ApplicationUser> userManager, 
-        RoleManager<string> roleManager)
+        RoleManager<IdentityRole> roleManager)
     {
         _dbContext = dbContext;
         _appUserSettings = options.Value;
@@ -57,7 +57,7 @@ public class AppSetupService: IAppSetupService
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(applicationUser, UserRoles.Admin);
+                await _userManager.AddToRoleAsync(applicationUser, role);
             }
         }
     }
@@ -67,9 +67,9 @@ public class AppSetupService: IAppSetupService
         string[] roles = [UserRoles.Admin, UserRoles.Member];
         foreach (var role in roles)
         {
-            if (await _roleManager.RoleExistsAsync(role))
+            if (!await _roleManager.RoleExistsAsync(role))
             {
-                await _roleManager.CreateAsync(role);
+                await _roleManager.CreateAsync(new IdentityRole(role));
             }
         }
     }
