@@ -20,7 +20,7 @@ public class AuthController: BaseController
 
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResult<UserLoginResponse?>),StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResult<UserLoginResponse?>),StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResult<>),StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] UserLoginCommand command)
     {
         return CustomResponse(await _mediator.Send(command));
