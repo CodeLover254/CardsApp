@@ -43,7 +43,7 @@ public class CardsQueryHandler : BaseCardsQueryableBuilder, IRequestHandler<Card
             CardFilterables.Name => cardsQueryable.Where(x => x.Name == searchTerm),
             CardFilterables.Color => cardsQueryable.Where(x => x.Color == searchTerm),
             CardFilterables.Status => cardsQueryable.Where(x => x.Status == searchTerm),
-            CardFilterables.DateCreated => cardsQueryable.Where(x=>x.CreatedAt == DateTime.Parse(searchTerm!)),
+            CardFilterables.DateCreated => cardsQueryable.Where(x=>x.CreatedAt == DateTime.Parse(searchTerm!).ToUniversalTime()),
             _=>cardsQueryable
         };
     }
