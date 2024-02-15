@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace CardsApp.Application.Validators.Cards;
 
-public class MyCardsQueryValidator: AbstractValidator<MyCardsQuery>
+public class CardsQueryValidator: AbstractValidator<CardsQuery>
 {
-    public MyCardsQueryValidator()
+    public CardsQueryValidator()
     {
         RuleFor(x=>x.Index).GreaterThanOrEqualTo(0);
         RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);
