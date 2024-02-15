@@ -27,7 +27,7 @@ public class CardsController: BaseController
         return CustomResponse(await _mediator.Send(query));
     }
     
-    [HttpGet("{Id}")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Card([FromRoute] MyCardQuery query)
