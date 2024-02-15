@@ -61,10 +61,9 @@ public class CardsController: BaseController
     [HttpDelete("delete/{id}")]
     [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateCard([FromBody] DeleteCardCommand command,[FromRoute] string id)
+    public async Task<IActionResult> UpdateCard([FromRoute] string id)
     {
-        command.Id = id;
-        return CustomResponse(await _mediator.Send(command));
+        return CustomResponse(await _mediator.Send(new DeleteCardCommand{Id = id}));
     }
     
 }
