@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CardsApp.Api.Controllers;
 
-[Authorize(Roles = UserRoles.Member)]
+[Authorize]
 [Route("api/[controller]")]
 public class CardsController: BaseController
 {
@@ -20,21 +20,24 @@ public class CardsController: BaseController
         _mediator = mediator;
     }
 
-    [HttpGet()]
+    [Authorize(Roles = $"{UserRoles.Member},{UserRoles.Admin}")]
+    [HttpGet]
     [ProducesResponseType(typeof(ApiResult<PaginatedResult<CardResponse>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Cards([FromQuery] MyCardsQuery query)
+    public async Task<IActionResult> Cards([FromQuery] CardsQuery query)
     {
         return CustomResponse(await _mediator.Send(query));
-    }
+    }          
     
-    [HttpGet("{id}")]
+    [Authorize(Roles = $"{UserRoles.Member},{UserRoles.Admin}")]
+    [HttpGet("{Id}")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Card([FromRoute] MyCardQuery query)
+    public async Task<IActionResult> Card([FromRoute] CardQuery cardQuery)
     {
-        return CustomResponse(await _mediator.Send(query));
+        return CustomResponse(await _mediator.Send(cardQuery));
     }
 
+    [Authorize(Roles = UserRoles.Member)]
     [HttpPost("create")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status400BadRequest)]
@@ -43,6 +46,7 @@ public class CardsController: BaseController
         return CustomResponse(await _mediator.Send(command));
     }
     
+    [Authorize(Roles = UserRoles.Member)]
     [HttpPut("update/{id}")]
     [ProducesResponseType(typeof(ApiResult<CardResponse?>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResult<>), StatusCodes.Status400BadRequest)]
@@ -53,7 +57,7 @@ public class CardsController: BaseController
         return CustomResponse(await _mediator.Send(command));
     }
     
-    
+    [Authorize(Roles = $"{UserRoles.Member},{UserRoles.Admin}")]
     [HttpDelete("delete/{id}")]
     [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResult<bool>), StatusCodes.Status404NotFound)]
