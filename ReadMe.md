@@ -17,8 +17,6 @@ Username: **user@cardsapp.com**
 
 Password: **Password@456**
 
-**Note**: When adding the token to Swagger's Authorize window, please ensure that you insert the **Bearer** keyword before pasting the token.
-
 ## Run Locally
 
 In order to build and run locally, please ensure you have **.NET 8.0** SDK installed in your computer. Also ensure that you
