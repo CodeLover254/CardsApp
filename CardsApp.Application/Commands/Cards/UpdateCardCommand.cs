@@ -41,7 +41,10 @@ public class UpdateCardCommandHandler : BaseCardsQueryableBuilder, IRequestHandl
 
         card.Color = request.Color;
         card.Description = request.Description;
-        card.Status = Enum.Parse<CardStatus>(request.Status);
+        
+        //status cannot be cleared out
+        if(!string.IsNullOrEmpty(request.Status))
+            card.Status =request.Status;
         
         await DbContext.SaveChangesAsync(cancellationToken);
         
