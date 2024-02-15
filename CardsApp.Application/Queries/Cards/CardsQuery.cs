@@ -1,21 +1,41 @@
-﻿using CardsApp.Domain.Dto.Cards;
+﻿using CardsApp.Application.Interfaces;
+using CardsApp.Application.Services;
+using CardsApp.Domain;
+using CardsApp.Domain.Dto.Cards;
 using CardsApp.Domain.Dto.Results;
 using CardsApp.Domain.Entities;
 using CardsApp.Domain.Enums;
 using CardsApp.Domain.Mappers.Cards;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CardsApp.Application.Queries.Cards;
 
-public class BaseCardsQueryHandler
+public class CardsQuery: BasePaginatedItemsQuery, IRequest<ApiResult<PaginatedResult<CardResponse>>>
+{
+   
+}
+
+public class CardsQueryHandler : BaseCardsQueryableBuilder, IRequestHandler<CardsQuery, ApiResult<PaginatedResult<CardResponse>>>
 {
     private readonly CardEntityToResponseMapper _mapper;
-
-    public BaseCardsQueryHandler(CardEntityToResponseMapper mapper)
+    public CardsQueryHandler(ICurrentUserProvider currentUserProvider, CardAppDbContext dbContext, CardEntityToResponseMapper mapper)
+    :base(dbContext,currentUserProvider)
     {
         _mapper = mapper;
     }
 
+    public async Task<ApiResult<PaginatedResult<CardResponse>>> Handle(CardsQuery request, CancellationToken cancellationToken)
+    {
+        var cardsQueryable = BuildQuery();
+        cardsQueryable = Filter(cardsQueryable, request.FilterBy, request.SearchTerm!);
+        cardsQueryable = Sort(cardsQueryable, request.SortBy);
+        var paginatedResult = await GetPaginatedCardResults(cardsQueryable, request);
+
+        return ResponseMessage<PaginatedResult<CardResponse>>.Success(paginatedResult, "success");
+    }
+    
     public IQueryable<Card> Filter(IQueryable<Card> cardsQueryable, CardFilterables? filterBy, string searchTerm)
     {
         return filterBy switch
