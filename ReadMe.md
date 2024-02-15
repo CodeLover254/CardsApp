@@ -39,7 +39,7 @@ Populate appsettings.json
 ```text
   Add the server, user id and password in the ConnectionStrings->Default json element. Ensure these credentials can connect to your postgres DB.
   Add a string of appropriate length (over 40 random characters recommended) in the Jwt->SecretKey json element.
-  Populate the UserApps->Admin and UserApps->Member elements with usernames and passwords of your choice. Usernames should be email addresses
+  Populate the AppUsers->Admin and AppUsers->Member elements with usernames and passwords of your choice. Usernames should be email addresses
 ```
 
 Restore dependencies
