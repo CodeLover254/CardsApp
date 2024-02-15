@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using CardsApp.Application.Interfaces;
+using CardsApp.Application.Services;
 using CardsApp.Domain;
 using CardsApp.Domain.Dto.Results;
 using CardsApp.Domain.Enums;
@@ -14,26 +15,23 @@ public class DeleteCardCommand: IRequest<ApiResult<bool>>
     public string Id { get; set; }
 }
 
-public class DeleteCardCommandHandler : IRequestHandler<DeleteCardCommand, ApiResult<bool>>
+public class DeleteCardCommandHandler : BaseCardsQueryableBuilder, IRequestHandler<DeleteCardCommand, ApiResult<bool>>
 {
-    private readonly ICurrentUserProvider _currentUserProvider;
-    private readonly CardAppDbContext _dbContext;
-
+    
     public DeleteCardCommandHandler(ICurrentUserProvider currentUserProvider, CardAppDbContext dbContext)
+    :base(dbContext, currentUserProvider)
     {
-        _currentUserProvider = currentUserProvider;
-        _dbContext = dbContext;
+        
     }
 
     public async Task<ApiResult<bool>> Handle(DeleteCardCommand request, CancellationToken cancellationToken)
     {
-        var card = await _dbContext.Cards.FirstOrDefaultAsync(c => c.Id== request.Id && c.UserId == _currentUserProvider.UserId,
-            cancellationToken: cancellationToken);
+        var card = await BuildQuery(x => x.Id == request.Id).FirstOrDefaultAsync(cancellationToken);
 
         if (card == null) return ResponseMessage<bool>.Error(false, "Card not found", ResponseCodes.NotFound);
 
-        _dbContext.Cards.Remove(card);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        DbContext.Cards.Remove(card);
+        await DbContext.SaveChangesAsync(cancellationToken);
         
         return ResponseMessage<bool>.Success(true, "Card successfully deleted");
     }
